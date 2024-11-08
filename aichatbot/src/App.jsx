@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import AIChatBot from './Component/AIChatBot'
 
 
 function App() {
 
   return (
     <>
-      <h1>hello</h1>
+      <AIChatBot/>
     </>
   )
 }
