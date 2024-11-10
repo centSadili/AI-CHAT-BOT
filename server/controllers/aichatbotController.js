@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const dotenv = require('dotenv');
 const { HfInference } = require('@huggingface/inference');
 
@@ -27,8 +26,9 @@ const imageToText =  async (req,res)=>{
 
         const HF_ACCESS_TOKEN = process.env.HF_ACCESS_TOKEN;
         const inference = new HfInference(HF_ACCESS_TOKEN);
-        const model = 'nlpconnect/vit-gpt2-image-captioning';
-        const imageURL = req.query.url || 'https://scontent.fmnl8-6.fna.fbcdn.net/v/t39.30808-6/465774656_8681388785272501_5022670114446324643_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=aa7b47&_nc_eui2=AeHs_-2YUXNSDESiV2qzAmiK7okL3cZmQ7ruiQvdxmZDumezs7PCq-n8nGa8rlKNiBhV1hZkUy0mk1cFLEsHSVig&_nc_ohc=OMNGtLCrvrMQ7kNvgFYSeLo&_nc_zt=23&_nc_ht=scontent.fmnl8-6.fna&_nc_gid=A6AUbTvlvET11iGUVkFc6MO&oh=00_AYDmy3m7gksg4Ejf2Lr5b1MBGmeCOxlO3TBvJIvQ-NLvHQ&oe=67363BE6';
+        const model = 'Salesforce/blip-image-captioning-large';
+        const imageURL = req.query.url || 
+        'https://ausmed-images.s3.ap-southeast-2.amazonaws.com/ausmed.com/ausmed-articles/20220325_body_1.jpg';
 
         const response = await fetch(imageURL);
         const imageBlob = await response.blob();
