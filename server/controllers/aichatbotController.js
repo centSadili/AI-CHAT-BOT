@@ -27,10 +27,10 @@ const imageToText =  async (req,res)=>{
         const HF_ACCESS_TOKEN = process.env.HF_ACCESS_TOKEN;
         const inference = new HfInference(HF_ACCESS_TOKEN);
         const model = 'Salesforce/blip-image-captioning-large';
-        const imageURL = req.query.url || 
+        const {image} = req.body|| 
         'https://ausmed-images.s3.ap-southeast-2.amazonaws.com/ausmed.com/ausmed-articles/20220325_body_1.jpg';
 
-        const response = await fetch(imageURL);
+        const response = await fetch(image);
         const imageBlob = await response.blob();
 
         const result = await inference.imageToText({
