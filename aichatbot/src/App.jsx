@@ -7,8 +7,8 @@ function App() {
 
   return (
     <>
-      {/* <AIChatBot/> */}
-      <ImageToText/>
+      <AIChatBot/>
+      {/* <ImageToText/> */}
     </>
   )
 }

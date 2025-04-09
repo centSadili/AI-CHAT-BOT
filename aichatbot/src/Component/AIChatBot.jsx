@@ -22,7 +22,11 @@ const AIChatBot = () => {
 
     setIsLoading(true)
     try{
-      const response = await axios.post("http://localhost:3000/api/send-message",{userInput})
+      const response = await axios.post("http://localhost:3000/api/send-message",{userInput},{
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       console.log(response.data.message)
       setChatHistory([
         ...chatHistory,
