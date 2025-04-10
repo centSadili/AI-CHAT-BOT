@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const { HfInference } = require('@huggingface/inference');
-
+const fs = require('fs');
 dotenv.config();
 
 
@@ -21,28 +21,35 @@ const chatAI = async (req,res) =>{
     }
 }
 
-const imageToText =  async (req,res)=>{
+const imageToText = async (req, res) => {
     try {
-
-        const HF_ACCESS_TOKEN = process.env.HF_ACCESS_TOKEN;
-        const inference = new HfInference(HF_ACCESS_TOKEN);
-        const model = 'Salesforce/blip-image-captioning-large';
-        const {image} = req.body|| 
-        'https://ausmed-images.s3.ap-southeast-2.amazonaws.com/ausmed.com/ausmed-articles/20220325_body_1.jpg';
-
-        const response = await fetch(image);
-        const imageBlob = await response.blob();
-
-        const result = await inference.imageToText({
-            data: imageBlob,
-            model: model,
-        });
-
-        res.json(result);
+      const HF_ACCESS_TOKEN = process.env.HF_ACCESS_TOKEN;
+      const inference = new HfInference(HF_ACCESS_TOKEN);
+      const model = 'Salesforce/blip-image-captioning-large';
+  
+      let imageBuffer;
+  
+      if (req.file) {
+        // 🖼️ Image uploaded via form-data
+        imageBuffer = req.file.buffer;
+      } else if (req.body.image) {
+        // 🌐 Image URL
+        const response = await fetch(req.body.image);
+        imageBuffer = Buffer.from(await response.arrayBuffer());
+      } else {
+        return res.status(400).json({ error: 'No image file or URL provided.' });
+      }
+  
+      const result = await inference.imageToText({
+        data: imageBuffer,
+        model: model,
+      });
+  
+      res.json(result);
     } catch (error) {
-        console.error('Error generating caption:', error);
-        res.status(500).send('Error generating caption');
+      console.error('Error generating caption:', error);
+      res.status(500).send('Error generating caption');
     }
-}
+  };
 
 module.exports={chatAI,imageToText}
